@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -17,6 +19,20 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+    }
+
+    private void Update()
+    {
+        if (Time.frameCount % 10 == 0)
+        {
+            if (health <= 0)
+            {
+                Debug.Log("Game Over!");
+                health = 5;
+                score = 0;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+        }
     }
 
     public void FixedUpdate()
@@ -45,6 +61,11 @@ public class PlayerController : MonoBehaviour
         {
             health--;
             Debug.Log("Health: " + health);
+        }
+
+        if (other.CompareTag("Goal"))
+        {
+            Debug.Log("You win!");
         }
     }
 }
